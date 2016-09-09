@@ -24,6 +24,7 @@ hash_table *init(int size) {
 	return table;
 }
 
+
 /**
  * Hash function to calculate index in hash table
  */
@@ -41,7 +42,6 @@ int insert(hash_table *table, int key, int value) {
 	if (table == NULL) return -1;
 
 	int index = hash(table, key);
-
 	hash_entry *entry = table->entries[index];
 
 	while (entry) {
@@ -59,6 +59,8 @@ int insert(hash_table *table, int key, int value) {
 	// allocate entry
 	hash_entry *new_entry = malloc(sizeof(hash_entry));
 	if (new_entry == NULL) return -1;
+
+	// set entry values
 	new_entry->key = key;
 	new_entry->value = malloc(strlen(value) * sizeof(char));
 	if (entry->value == NULL) return -1;
@@ -70,3 +72,52 @@ int insert(hash_table *table, int key, int value) {
 	return index;
 }
 
+
+/**
+ * Remove entry with key from hash table
+ *
+ * @return index of entry that is being removed, -1 if failed
+ */
+int remove(hash_table *table, int key) {
+	if (table == NULL) return -1;
+
+	int index = hash(table, key);
+	hash_entry *entry = table->entries[index];
+
+	// find the entry within the linked list
+	while (entry) {
+		if (entry->key == key) break;
+		entry = entry->next;
+	}
+
+	// update hash table
+	table->entries[index] = entry->next;
+
+	free(entry->value);
+	free(entry);
+	return index;
+}
+
+
+/**
+ * Destroy and deallocate hash table
+ *
+ * @return 0 on success, -1 otherwise
+ */
+int destroy(hash_table *table) {
+	if (table == NULL) return -1;
+
+	for (int i = 0; i < table->size; i++) {
+		hash_entry *entry = table->entries[index];
+
+		while (entry) {
+			hash_entry *temp = entry;
+			
+			free(temp->value);
+			free(temp);
+
+			entry = entry->next;
+		}
+	}
+	return 0;
+}

@@ -24,4 +24,4 @@ int insert(hash_table *table, key, value);
 
 int remove(hash_table *table, key);
 
-int detroy(hash_table *table);
+int destroy(hash_table *table);
