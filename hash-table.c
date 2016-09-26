@@ -4,7 +4,7 @@
  * Initialize hash table
  * @return pointer to hash table, NULL if failed
  */
-hash_table *init(int size) {
+hash_table *hash_init(int size) {
 	if (size <= 0) return NULL;
 
 	// allocate hash table
@@ -38,11 +38,11 @@ int hash(hash_table *table, int key) {
  *
  * @return index of the entry that is being inserted, -1 otherwise
  */
-int insert(hash_table *table, int key, int value) {
+int hash_insert(hash_table *table, int key, char *value) {
 	if (table == NULL) return -1;
 
-	int index = hash(table, key);
-	hash_entry *entry = table->entries[index];
+	int i = hash(table, key);
+	hash_entry *entry = table->entries[i];
 
 	while (entry) {
 		if (entry->key == key) {
@@ -51,7 +51,7 @@ int insert(hash_table *table, int key, int value) {
 			entry->value = malloc(strlen(value) * sizeof(char));
 			if (entry->value == NULL) return -1;
 			strcpy(entry->value, value);
-			return index;
+			return i;
 		}
 		entry = entry->next;
 	}
@@ -65,11 +65,11 @@ int insert(hash_table *table, int key, int value) {
 	new_entry->value = malloc(strlen(value) * sizeof(char));
 	if (entry->value == NULL) return -1;
 	strcpy(entry->value, value);
-	entry->next = table->entries[index];
+	entry->next = table->entries[i];
 
 	// insert entry at the beginning of the linked list
-	table->entries[index] = entry;
-	return index;
+	table->entries[i] = entry;
+	return i;
 }
 
 
@@ -78,11 +78,11 @@ int insert(hash_table *table, int key, int value) {
  *
  * @return index of entry that is being removed, -1 if failed
  */
-int remove(hash_table *table, int key) {
+int hash_remove(hash_table *table, int key) {
 	if (table == NULL) return -1;
 
-	int index = hash(table, key);
-	hash_entry *entry = table->entries[index];
+	int i = hash(table, key);
+	hash_entry *entry = table->entries[i];
 
 	// find the entry within the linked list
 	while (entry) {
@@ -91,11 +91,11 @@ int remove(hash_table *table, int key) {
 	}
 
 	// update hash table
-	table->entries[index] = entry->next;
+	table->entries[i] = entry->next;
 
 	free(entry->value);
 	free(entry);
-	return index;
+	return i;
 }
 
 
@@ -104,11 +104,11 @@ int remove(hash_table *table, int key) {
  *
  * @return 0 on success, -1 otherwise
  */
-int destroy(hash_table *table) {
+int hash_destroy(hash_table *table) {
 	if (table == NULL) return -1;
 
 	for (int i = 0; i < table->size; i++) {
-		hash_entry *entry = table->entries[index];
+		hash_entry *entry = table->entries[i];
 
 		while (entry) {
 			hash_entry *temp = entry;

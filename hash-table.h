@@ -1,3 +1,6 @@
+#include <string.h>
+#include <stdlib.h>
+
 /**
  * Hash table entry structure
  */
@@ -16,12 +19,12 @@ typedef struct hash_table {
 	hash_entry **entries;
 } hash_table;
 
-hash_table *init(int size);
+hash_table *hash_init(int size);
 
-int hash(int key);
+int hash_hash(hash_table *table, int key);
 
-int insert(hash_table *table, key, value);
+int hash_insert(hash_table *table, int key, char *value);
 
-int remove(hash_table *table, key);
+int hash_remove(hash_table *table, int key);
 
-int destroy(hash_table *table);
+int hash_destroy(hash_table *table);
