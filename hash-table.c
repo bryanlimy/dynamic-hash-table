@@ -5,6 +5,8 @@
  * @return pointer to hash table, NULL if failed
  */
 hash_table *hash_init(int size) {
+	printf("initializing hash table with size: %d\n", size);
+	
 	if (size <= 0) return NULL;
 
 	// allocate hash table
@@ -105,6 +107,8 @@ int hash_remove(hash_table *table, int key) {
  * @return 0 on success, -1 otherwise
  */
 int hash_destroy(hash_table *table) {
+	printf("destroying hash table with size: %d\n", table->size);
+
 	if (table == NULL) return -1;
 
 	for (int i = 0; i < table->size; i++) {
